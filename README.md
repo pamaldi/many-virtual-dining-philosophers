@@ -30,11 +30,11 @@ is required.
 
 
 ## Command Line Arguments
-1. PhilosopherType philosopherType: GREEK for native Threads, GERMAN for virtual Threads
-2   Integer numberOfPhilosophers
-3   Long thinkingTime (in milliseconds)
-4   Long eatingTime (in milliseconds)
-5   Integer cycles:  number of eating cycles for each philosopher
+1.   PhilosopherType philosopherType: GREEK for native Threads, GERMAN for virtual Threads
+2.   Integer numberOfPhilosophers
+3.   Long thinkingTime (in milliseconds)
+4.   Long eatingTime (in milliseconds)
+5.   Integer cycles:  number of eating cycles for each philosopher
 
 
 
