@@ -39,5 +39,5 @@ is required.
 ## Benchmark
 
 Some benchmark results
-![](C:\progetti\many-virtual-dining-philosophers\bench2.png)
+![](bench2.png)
 
