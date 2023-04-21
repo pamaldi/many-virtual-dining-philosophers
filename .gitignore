@@ -39,3 +39,5 @@ build/
 /.idea/
 /.idea/
 /.idea/
+/cloud.isaura.dining.philosophers.benchmarks.DiningPhilosophersContextSwitchBenchmark.benchmark-Throughput-numberOfPhilosophers-10-philosopherType-GERMAN/
+/cloud.isaura.dining.philosophers.benchmarks.DiningPhilosophersContextSwitchBenchmark.benchmark-Throughput-numberOfPhilosophers-10-philosopherType-GREEK/

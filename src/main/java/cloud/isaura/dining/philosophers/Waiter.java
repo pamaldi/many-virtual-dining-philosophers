@@ -2,6 +2,8 @@ package cloud.isaura.dining.philosophers;
 
 import cloud.isaura.dining.philosophers.channels.AnyToOneBufferedChannel;
 
+import java.util.concurrent.Callable;
+
 public class Waiter implements Runnable
 {
 
@@ -17,11 +19,13 @@ public class Waiter implements Runnable
         this.numberOfPhilosophers = numberOfPhilosophers;
     }
 
+
     @Override
     public void run()
     {
         Long startTime = System.currentTimeMillis();
-        while(true)
+        boolean allStoppedCondition = this.numberOfPhilosophersStop.equals(this.numberOfPhilosophers);
+        while(!allStoppedCondition)
         {
             try
             {
@@ -30,16 +34,16 @@ public class Waiter implements Runnable
                 {
                     this.numberOfPhilosophersStop++;
                     //System.out.println("Number of philosophers stop: " + this.numberOfPhilosophersStop);
-                    boolean allStopped = this.numberOfPhilosophersStop.equals(this.numberOfPhilosophers);
+                    allStoppedCondition = this.numberOfPhilosophersStop.equals(this.numberOfPhilosophers);
                     //System.out.println("All philosophers stop: " + allStopped);
-                    if(allStopped)
+                    if(allStoppedCondition)
                     {
 
                         Thread.sleep(10L);
-                        System.out.println("All philosophers stop");
+                        //System.out.println("All philosophers stop");
                         Long endTime = System.currentTimeMillis();
-                        System.out.println("Total time: " + (endTime - startTime));
-                        System.exit(0);
+                        //System.out.println("Total time: " + (endTime - startTime));
+
                     }
                 }
 
@@ -48,6 +52,8 @@ public class Waiter implements Runnable
             {
                 e.printStackTrace();
             }
+
         }
+
     }
 }

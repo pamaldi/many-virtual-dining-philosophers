@@ -6,6 +6,10 @@ package cloud.isaura.dining.philosophers;
 import cloud.isaura.dining.philosophers.channels.AnyToOneBufferedChannel;
 import cloud.isaura.dining.philosophers.channels.AnyToOneChannel;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.IntStream;
 
 public class DiningPhilosophers
@@ -23,27 +27,46 @@ public class DiningPhilosophers
 
     public void agorazein(DiningPhilosophersParams diningPhilosophersParams)
     {
-        this.enter = new AnyToOneBufferedChannel<>(diningPhilosophersParams.numberOfPhilosophers()-1);
-        this.stop= new AnyToOneBufferedChannel<>(diningPhilosophersParams.numberOfPhilosophers());
-        this.waiter = new Waiter(this.stop, diningPhilosophersParams.numberOfPhilosophers());
-        Thread waiterThread = new Thread(this.waiter);
-        waiterThread.start();
-        DiningPhilosophersLog diningPhilosophersLog = new DiningPhilosophersLog(diningPhilosophersParams.numberOfPhilosophers());
-        initChannels(diningPhilosophersParams);
-        initPhilosophers(diningPhilosophersParams, diningPhilosophersLog);
-        startPhilosophers(diningPhilosophersParams);
+
+        goToAgora(diningPhilosophersParams);
 
     }
 
-    private void startPhilosophers(DiningPhilosophersParams diningPhilosophersParams)
+    public void goToAgora(DiningPhilosophersParams diningPhilosophersParams)
     {
+        init(diningPhilosophersParams);
+        start(diningPhilosophersParams);
+        this.waiter = new Waiter(this.stop, diningPhilosophersParams.numberOfPhilosophers());
+       Thread t = new Thread(waiter);
+       t.start();
+    }
+
+    public void init(DiningPhilosophersParams diningPhilosophersParams)
+    {
+        this.enter = new AnyToOneBufferedChannel<>(diningPhilosophersParams.numberOfPhilosophers()-1);
+        this.stop= new AnyToOneBufferedChannel<>(diningPhilosophersParams.numberOfPhilosophers());
+        this.waiter = new Waiter(this.stop, diningPhilosophersParams.numberOfPhilosophers());
+        DiningPhilosophersLog diningPhilosophersLog = new DiningPhilosophersLog(diningPhilosophersParams.numberOfPhilosophers());
+        initChannels(diningPhilosophersParams);
+        initPhilosophers(diningPhilosophersParams, diningPhilosophersLog);
+    }
+
+    public void start(DiningPhilosophersParams diningPhilosophersParams)
+    {
+
         IntStream.range(0, diningPhilosophersParams.numberOfPhilosophers())
                 .forEach(i ->
                     {
                         if(diningPhilosophersParams.philosopherType().equals(PhilosopherType.GREEK))
                         {
-                            Thread t = new Thread(this.philosophers[i]);
-                            t.start();
+                            //Thread t = new Thread(this.philosophers[i]);
+                            //t.start();
+                            Executors.newFixedThreadPool(diningPhilosophersParams.numberOfPhilosophers(), r -> {
+                                Thread t = new Thread(r);
+                                t.setDaemon(true);
+                                return t;
+
+                            }).submit(this.philosophers[i]);
                         }
                         else if(diningPhilosophersParams.philosopherType().equals(PhilosopherType.GERMAN))
                         {
@@ -53,6 +76,7 @@ public class DiningPhilosophers
                     }
                 );
     }
+
 
 
 

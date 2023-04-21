@@ -29,10 +29,10 @@ public class DiningPhilosophersLog
         this.reentrantLock.lock();
         this.numberOfEat[i]= this.numberOfEat[i]+1;
         this.concurrentEating++;
-        System.out.println("Concurrent eating: " + this.concurrentEating);
+        //System.out.println("Concurrent eating: " + this.concurrentEating);
         if(this.concurrentEating > this.numberOfPhilosophers/2)
         {
-            System.out.println("ERROR: Concurrent eating: " + this.concurrentEating);
+            //System.out.println("ERROR: Concurrent eating: " + this.concurrentEating);
         }
         this.reentrantLock.unlock();
     }
@@ -41,7 +41,7 @@ public class DiningPhilosophersLog
     {
         this.reentrantLock.lock();
         this.concurrentEating--;
-        System.out.println("Concurrent eating: " + this.concurrentEating);
+        //System.out.println("Concurrent eating: " + this.concurrentEating);
         this.reentrantLock.unlock();
     }
 
